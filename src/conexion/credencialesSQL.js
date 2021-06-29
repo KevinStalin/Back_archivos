@@ -4,11 +4,11 @@ const config = {
     user: 'SA',
     password: 'kevinroot7?',
     database: 'TestDB',
-    stream: false,
+    // stream: false,
     options: {
-        trustedConnection: true,
+        // tru +stedConnection: true,
         encrypt: true,
-        enableArithAbort: true,
+        // enableArithAbort: true,
         trustServerCertificate: true,
     },
 }

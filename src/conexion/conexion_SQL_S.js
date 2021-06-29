@@ -3,7 +3,7 @@ const mssql = require('mssql');
 module.exports = class Sql {
     constructor(stringConnection) {
         this.stringConnection = stringConnection;
-        this.connect();
+        // this.connect();
     }
 
     connect() {
