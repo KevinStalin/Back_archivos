@@ -17,9 +17,9 @@ app.get('/API/mostrar', (req, res) => {
     connection_Mysql.end();
 });
 
-app.get('/API/mensaje', (req, res) => {
-    res.json({ "ok": "Mensaje Sevidorrrr" });
-});
+// app.get('/API/mensaje', (req, res) => {
+//     res.json({ "ok": "Mensaje Sevidorrrr" });
+// });
 
 
 app.post('/API/login', (req, res) => {

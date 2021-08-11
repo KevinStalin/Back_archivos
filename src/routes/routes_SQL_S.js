@@ -10,6 +10,57 @@ const { getConnectionSql, sql } = require("../conexion/conexion_SQLServer");
   rowsAffected: [ 1 ]
 }
 */
+/** LSImulacion login*/
+
+app.post("/API/login", (req, res) => {
+  console.log("En el metodo");
+  let body = req.body;
+  let userData = {
+    user: body.user,
+    password: body.password,
+  };
+  let user1 = {
+    user: 1710736834,
+    password: "1",
+    id_rol:1
+  };
+  let user2 = {
+    user: 454545,
+    password: "1",
+    id_rol: 2,
+  };
+
+  console.log(userData);
+  if (userData.user == user1.user) {
+    if (userData.password == user1.password) {
+      res.json({
+        ok: true,
+        message: "Usuario valido",
+        rol: user1.id_rol,
+      });
+    } else {
+      res.json({
+        ok: false,
+        message: "Usuario o contraseña invalidos",
+      });
+    }
+  }
+  if (userData.user == user2.user) {
+    if (userData.password == user2.password) {
+      res.json({
+        ok: true,
+        message: "Usuario valido",
+        rol: user2.id_rol,
+      });
+    } else {
+      res.json({
+        ok: false,
+        message: "Usuario o contraseña invalidos",
+      });
+    }
+  }
+});
+
 
 app.get("/API/reporte", async (req, res) => {
   const pool = await getConnectionSql();
@@ -20,14 +71,8 @@ app.get("/API/reporte", async (req, res) => {
 });
 
 /**
- * PAGINA REGISTROS
+ * PAGINA REGISTROS CONSULTA
  */
-//Federacion
-// app.get('/API/muestra_federacion', async(req, res) => {
-//     const pool = await getConnectionSql();
-//     const result = await pool.request().query('select name,quantity from Inventory;');
-//     res.json(result.recordset);
-// });
 app.get(
   "/API/muestra_federacion",
   metodoMuestra(
@@ -79,6 +124,10 @@ app.get(
   "/API/muestra_sector",
   metodoMuestra("SELECT sector AS descripcion FROM TB_SECTOR ORDER BY sector;")
 );
+app.get(
+  "/API/muestra_genero",
+  metodoMuestra("SELECT genero AS descripcion FROM TB_GENERO ORDER BY genero;")
+);
 
 function metodoMuestra(consuta) {
   return async (req, res) => {
@@ -87,27 +136,76 @@ function metodoMuestra(consuta) {
     res.json(result.recordset);
   };
 }
-app.post("/API/Insert/federacion", async (req, res) => {
-  let federacion = req.body.federacion;
-  const pool = await getConnectionSql();
-  const ingreso1 = await pool
-    .request()
-    .input("nuevo", sql.VarChar, federacion)
-    .query("insert into TB_FEDERACION(federacion) values (@nuevo);");
-  if (ingreso1.rowsAffected.length == 1) {
-    console.log(`Insertado ${federacion}`);
-    res.json({
-      ok: true,
-      message: `Insertado ${federacion}`,
-    });
-  } else {
-    res.json({
-      ok: true,
-      message: `No se pudo insertar: ${federacion}`,
-    });
-    console.log(`No se pudo insertar: ${federacion}`);
-  }
-});
+/**
+ * PAGINA REGISTROS INSERTA
+ */
+function metodoInserta(consulta) {
+  return async (req, res) => {
+    let Dato = req.body.Dato;
+    const pool = await getConnectionSql();
+    const ingreso = await pool
+      .request()
+      .input("nuevo", sql.VarChar, Dato.toUpperCase())
+      .query(`${consulta} values (@nuevo) `);
+    if (ingreso.rowsAffected.length == 1) {
+      console.log(`Insertado ${Dato}`);
+      res.json({
+        ok: true,
+        message: `Insertado ${Dato}`,
+      });
+    } else {
+      console.log(`No se pudo insertar: ${Dato}`);
+      res.json({
+        ok: false,
+        message: `No se pudo insertar: ${Dato}`,
+      });
+    }
+  };
+}
+// insert into TB_FEDERACION(federacion) values (@nuevo);
+
+app.post(
+  "/API/Insert/federacion",
+  metodoInserta("insert into TB_FEDERACION(federacion)")
+);
+app.post(
+  "/API/Insert/provincia",
+  metodoInserta("insert into TB_PROVINCIA(provincia)")
+);
+app.post(
+  "/API/Insert/deporte",
+  metodoInserta("insert into TB_DEPORTE(deporte)")
+);
+app.post(
+  "/API/Insert/disciplina",
+  metodoInserta("insert into TB_DISCIPLINA(disciplina)")
+);
+app.post(
+  "/API/Insert/prueba",
+  metodoInserta("insert into TB_PRUEBA(prueba)")
+);
+app.post(
+  "/API/Insert/categoria_proyecto",
+  metodoInserta("insert into TB_CATEGORIA_PROYECTO(categoria_proyecto)")
+);
+app.post(
+  "/API/Insert/categoria_edad",
+  metodoInserta("insert into TB_CATEGORIA_EDAD(categoria_edad)")
+);
+app.post(
+  "/API/Insert/etnia",
+  metodoInserta("insert into TB_ETNIA(etnia)")
+);
+app.post(
+  "/API/Insert/sector",
+  metodoInserta("insert into TB_SECTOR(sector)")
+);
+app.post(
+  "/API/Insert/genero",
+  metodoInserta("insert into TB_GENERO(genero)")
+);
+
+/* 
 app.post("/API/Insert/provincia", async (req, res) => {
   let provincia = req.body.provincia;
   console.log(provincia);
@@ -130,7 +228,7 @@ app.post("/API/Insert/provincia", async (req, res) => {
     console.log(`No se pudo insertar: ${provincia}`);
   }
 });
-
+ */
 /**
  * Validaciones asincronas Tablas
  */

@@ -1,4 +1,6 @@
-const config = {
+const config =
+  /* 
+{
   port: 38912,
   server: "mssql-38863-0.cloudclusters.net",
   user: "kevin",
@@ -12,6 +14,20 @@ const config = {
     trustServerCertificate: true,
   },
 };
-// mssql-38863-0.cloudclusters.net,38912
-// 204.2.195.212
+ */ // mssql-38863-0.cloudclusters.net,38912
+  // 204.2.195.212
+  {
+    server: "localhost",
+    user: "SA",
+    password: "kevin",
+    database: "DEPORTE",
+    // stream: false,
+    options: {
+      // tru +stedConnection: true,
+      encrypt: true,
+      // enableArithAbort: true,
+      trustServerCertificate: true,
+    },
+  };
+
 module.exports = config;
