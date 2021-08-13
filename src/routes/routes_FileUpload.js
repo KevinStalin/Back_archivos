@@ -169,8 +169,7 @@ function eliminarDiacriticosEs(texto) {
     )
     .normalize();
 }
-// rows.length
-// TB_DEPORTISTA(cedula,nombre,apellido,fecha_nacimiento,edad,id_genero,id_etnia)
+  // TB_DEPORTISTA(cedula,nombre,apellido,fecha_nacimiento,edad,id_genero,id_etnia)
 let nuevaCargaBDD = async (rows) => {
   console.log("Metodo para caragr *DATOS*");
   const pool = await getConnectionSql();
@@ -469,24 +468,6 @@ let cargaBDD = async (rows) => {
   return "Datos Cargados BDD";
 };
 
-app.get("/API/envio", (req, res) => {
-  // console.log(__dirname);
-  // res.sendFile(__dirname + '/../public/Formato.xlsx');
-  const excel = xlsx.readFile(__dirname + "/../public/Formato.xlsx");
-  let nombreHoja = excel.SheetNames;
-  // let data = xlsx.utils.
-  const ller01 = new xlsx.FileRead();
-  ller01.onload = (e) => {
-    const bstr = e.target.result;
-    console.log("BSRT-->", bstr);
-    const wb = XLSX.read(bstr, { type: "binary" });
-    const wsname = wb.SheetNames[0];
-    const ws = wb.Sheets[wsname];
-    /* save data */
-    console.log(ws);
-  };
-});
-
 app.get("/API/envioExcel/:id", (req, res) => {
   // console.log(__dirname + "/uploads/" + req.params.id);
   res.sendFile(path.resolve(__dirname + "/uploads/" + req.params.id));
@@ -499,23 +480,5 @@ app.get("/API/envioFormato", (req, res) => {
   // console.log(__dirname + "/Formato.xlsx");
   res.sendFile(path.resolve(__dirname + "/Formato.xlsx"));
 });
-let fechaaa = () => {
-  let fecha = new Date();
-  let Fecha =
-    fecha.getDate() +
-    "/" +
-    (fecha.getMonth()+1) +
-    "/" +
-    fecha.getFullYear() +
-    " " +
-    fecha.getHours() +
-    ":" +
-    fecha.getMinutes() +
-    ":" +
-    fecha.getSeconds();
-  console.log(Fecha);
-  console.log(typeof(fecha.getMonth()));
-};
-fechaaa()
 
 module.exports = app;
